@@ -1,10 +1,9 @@
-# main/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
-from .models import DesignRequest, Category # Предполагается, что модели находятся в той же директории
+from .models import DesignRequest, Category
 
 class CustomUserCreationForm(UserCreationForm):
     """
@@ -30,7 +29,7 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         # Указываем ТОЛЬКО те поля, которые существуют в модели User и должны быть включены в форму
-        fields = ("username", "email", "password1", "password2") # Убраны 'full_name' и 'agree_to_terms'
+        fields = ("username", "email", "password1", "password2")
         help_texts = {
             'username': "Только латинские буквы и дефисы.",
             'email': "Введите действительный адрес электронной почты.",
@@ -86,19 +85,14 @@ class CustomUserCreationForm(UserCreationForm):
         full_name = self.cleaned_data["full_name"]
         name_parts = full_name.strip().split()
 
-        # Предполагаем формат: Фамилия Имя [Отчество]
-        # Сохраняем Имя в first_name, Фамилию в last_name
+
         if len(name_parts) >= 2:
             user.first_name = name_parts[1] # Имя
             user.last_name = name_parts[0]  # Фамилия
             # Если есть отчество (и его нужно сохранить, например, вместе с фамилией)
             if len(name_parts) > 2:
-                # Вариант 1: Сохранить отчество в last_name после фамилии
                 user.last_name = f"{name_parts[0]} {name_parts[2]}"
-                # Вариант 2: Сохранить Имя и Отчество в first_name
-                # user.first_name = f"{name_parts[1]} {name_parts[2]}"
-                # Выберите подходящий вариант. Обычно отчество хранят отдельно или не хранят.
-                # Пусть в данном случае будет Вариант 1 (Фамилия + Отчество в last_name)
+
         else:
             # Если вдруг не прошла валидация выше и пришло меньше 2 частей, хотя по логике не должно
             user.first_name = ""

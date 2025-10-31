@@ -21,29 +21,27 @@ class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
     redirect_authenticated_user = True
 
-    def get_success_url(self):
-        """
-        Определяет URL для перенаправления после успешного входа.
-        """
-        if self.request.user.is_staff:
-            return '/admin_dashboard/'
-        else:
-            return '/user_dashboard/'
-
 # --- Представление для регистрации ---
 def register(request):
     """
     Представление для регистрации нового пользователя.
+    Доступно всем, включая гостей.
     """
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('user_dashboard')
-    else:
-        form = CustomUserCreationForm()
+    if request.method == 'POST': # Если форма отправлена (POST)
+        form = CustomUserCreationForm(request.POST) # Создаем форму с данными из POST
+        if form.is_valid(): # Проверяем, прошла ли форма валидацию
+            user = form.save() # Сохраняем нового пользователя в базу данных
+            login(request, user) # Автоматически входим под только что созданным пользователем
+            messages.success(request, 'Регистрация прошла успешно! Добро пожаловать.')
 
+            return redirect('user_dashboard')
+        else:
+
+            pass
+    else:
+        form = CustomUserCreationForm() # Создаем пустую форму
+
+    # Отображаем шаблон регистрации с формой (пустой или с ошибками)
     return render(request, 'registration/register.html', {'form': form})
 
 # --- Представление для главной страницы ---
@@ -59,118 +57,36 @@ def home(request):
         'in_progress_count': in_progress_count
     })
 
-# --- Представление для личного кабинета пользователя ---
-@login_required
 def user_dashboard(request):
-    """
-    Представление для личного кабинета авторизованного пользователя.
-    Показывает его заявки.
-    """
-    user_requests = DesignRequest.objects.filter(user=request.user)
+    user_requests = DesignRequest.objects.filter(user = request.user)
     status_filter = request.GET.get('status')
-
-    if status_filter:
-        user_requests = user_requests.filter(status=status_filter)
+    if status_filter :
+        user_requests = user_requests.filter(status = status_filter)
 
     return render(request, 'main_app/user_dashboard.html', {'requests': user_requests})
 
-# --- Представление для создания заявки ---
-@login_required
 def create_request(request):
     """
     Представление для создания новой заявки на дизайн.
     """
-    if request.method == 'POST':
+    if request.method == 'POST': # Проверяем, был ли отправлен POST-запрос (форма отправлена)
+        # Создаем форму с данными из POST и файлами из FILES (для изображения)
         form = DesignRequestForm(request.POST, request.FILES)
-        if form.is_valid():
+        if form.is_valid(): # Проверяем, прошла ли форма валидацию
+            # Создаем объект заявки, но пока не сохраняем в базу (commit=False)
             design_request = form.save(commit=False)
+            # Привязываем заявку к текущему пользователю
             design_request.user = request.user
+            # Устанавливаем начальный статус "Новая"
             design_request.status = 'new'
+            # Теперь сохраняем объект в базу данных
             design_request.save()
+            # Добавляем сообщение об успешном создании
             messages.success(request, 'Заявка успешно создана.')
+            # Перенаправляем пользователя на его личный кабинет
             return redirect('user_dashboard')
-    else:
-        form = DesignRequestForm()
+    else: # Если запрос GET (пользователь заходит на страницу создания)
+        form = DesignRequestForm() # Создаем пустую форму
 
+    # Отображаем шаблон создания заявки с формой (пустой или с ошибками)
     return render(request, 'main_app/create_request.html', {'form': form})
-
-# --- Представление для удаления заявки ---
-@login_required
-def delete_request(request, request_id):
-    """
-    Представление для удаления заявки пользователем.
-    """
-    design_request = get_object_or_404(DesignRequest, id=request_id, user=request.user)
-
-    if design_request.status in ['in_progress', 'completed']:
-        messages.error(request, 'Нельзя удалить заявку, которая уже находится в работе или выполнена.')
-        return redirect('user_dashboard')
-
-    if request.method == 'POST':
-        design_request.delete()
-        messages.success(request, 'Заявка успешно удалена.')
-        return redirect('user_dashboard')
-
-    return render(request, 'main_app/delete_request.html', {'request': design_request})
-
-# --- Представление для админ-панели ---
-@user_passes_test(is_admin)
-def admin_dashboard(request):
-    """
-    Представление для панели управления администратора.
-    Показывает все заявки.
-    """
-    all_requests = DesignRequest.objects.all()
-    return render(request, 'main_app/admin_dashboard.html', {'requests': all_requests})
-
-# --- Представление для изменения статуса заявки ---
-@user_passes_test(is_admin)
-def change_status(request, request_id):
-    """
-    Представление для изменения статуса заявки администратором.
-    """
-    design_request = get_object_or_404(DesignRequest, id=request_id)
-    if design_request.status in ['in_progress', 'completed']:
-        messages.error(request, 'Нельзя изменить статус заявки, которая уже находится в работе или выполнена.')
-        return redirect('admin_dashboard')
-
-    if request.method == 'POST':
-        form = ChangeStatusForm(request.POST, request.FILES, instance=design_request)
-        if form.is_valid():
-            form.save()
-            messages.success(request, f'Статус заявки "{design_request.title}" изменен на "{design_request.get_status_display()}".')
-            return redirect('admin_dashboard')
-    else:
-        form = ChangeStatusForm(instance=design_request)
-
-    return render(request, 'main_app/change_status.html', {'form': form, 'request_obj': design_request})
-
-# --- Представление для управления категориями ---
-@user_passes_test(is_admin)
-def manage_categories(request):
-    """
-    Представление для добавления и удаления категорий заявок администратором.
-    """
-    categories = Category.objects.all()
-
-    if request.method == 'POST':
-        action = request.POST.get('action')
-
-        if action == 'add':
-            name = request.POST.get('name')
-            if name:
-                Category.objects.create(name=name)
-                messages.success(request, 'Категория добавлена.')
-
-        elif action == 'delete':
-            cat_id = request.POST.get('category_id')
-            if cat_id:
-                try:
-                    category = Category.objects.get(id=cat_id)
-                    DesignRequest.objects.filter(category=category).delete()
-                    category.delete()
-                    messages.success(request, 'Категория и связанные заявки удалены.')
-                except Category.DoesNotExist:
-                    messages.error(request, 'Категория не найдена.')
-
-    return render(request, 'main_app/manage_categories.html', {'categories': categories})

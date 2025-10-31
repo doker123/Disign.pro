@@ -23,10 +23,9 @@ from django.views.generic import RedirectView
 
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='main/', permanent=True)),
+    path('', RedirectView.as_view(url='/main/', permanent=True)),
     path('superadmin/', admin.site.urls),
     path('main/', include('main.urls')),
-
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
 

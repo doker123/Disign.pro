@@ -1,0 +1,20 @@
+.logoutBase {
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue;
+}
+/*li {*/
+/*    list-style-type: none;*/
+/*}*/
+/*a {*/
+/*    text-decoration: none;*/
+/*    color: #383838;*/
+/*}*/
+/*form > p {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    width: 250px;*/
+/*}*/

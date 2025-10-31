@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Создать заявку - Design.pro{% endblock %}
+
+{% block content %}
+    <h1>Создать новую заявку на дизайн</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}:</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div class="alert alert-danger">{{ form.title.errors }}</div>
+            {% endif %}
+            {% if form.title.help_text %}
+                <small class="form-text text-muted">{{ form.title.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}:</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="alert alert-danger">{{ form.description.errors }}</div>
+            {% endif %}
+            {% if form.description.help_text %}
+                <small class="form-text text-muted">{{ form.description.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.category.id_for_label }}">{{ form.category.label }}:</label>
+            {{ form.category }}
+            {% if form.category.errors %}
+                <div class="alert alert-danger">{{ form.category.errors }}</div>
+            {% endif %}
+            {% if form.category.help_text %}
+                <small class="form-text text-muted">{{ form.category.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.plan_image.id_for_label }}">{{ form.plan_image.label }}:</label>
+            {{ form.plan_image }}
+            {% if form.plan_image.errors %}
+                <div class="alert alert-danger">{{ form.plan_image.errors }}</div>
+            {% endif %}
+            {% if form.plan_image.help_text %}
+                <small class="form-text text-muted">{{ form.plan_image.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Создать заявку</button>
+    </form>
+
+    <p><a href="{% url 'user_dashboard' %}">Вернуться в личный кабинет</a></p>
+
+{% endblock %}
