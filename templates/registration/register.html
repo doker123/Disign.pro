@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+    <h2>Регистрация</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+
+    {% if form.non_field_errors %}
+        <div style="color: red;">
+            <p>Пожалуйста, исправьте следующие ошибки:</p>
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+</body>
+</html>

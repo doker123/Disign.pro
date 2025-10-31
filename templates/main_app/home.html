@@ -1,0 +1,45 @@
+<!-- templates/main_app/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Главная - Design.pro{% endblock %}
+
+{% block content %}
+    <h1>Добро пожаловать в Design.pro!</h1>
+    <p>Создайте заявку на дизайн интерьера или просмотрите выполненные работы.</p>
+
+    <h2>Последние выполненные работы:</h2>
+    {% if completed_requests %}
+        <div class="completed-requests">
+            {% for req in completed_requests %}
+                <div class="request-item">
+                    <h3>{{ req.title }}</h3>
+                    <p>Категория: {{ req.category.name }}</p>
+                    <p>Дата: {{ req.created_at|date:"d.m.Y H:i" }}</p>
+                    {% if req.design_image %}
+                        <img src="{{ req.design_image.url }}" alt="Дизайн {{ req.title }}" style="max-width: 200px; height: auto;">
+                    {% else %}
+                        <p>Изображение дизайна отсутствует.</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Выполненных работ пока нет.</p>
+    {% endif %}
+
+    <h2>Заявок в работе: {{ in_progress_count }}</h2>
+
+    {% if user.is_authenticated %}
+        {% if user.is_staff %}
+            <p><a href="{% url 'admin_dashboard' %}">Перейти в админ-панель</a></p>
+            <p><a href="{% url 'manage_categories' %}">Управление категориями</a></p>
+        {% else %}
+            <p><a href="{% url 'user_dashboard' %}">Перейти в ваш личный кабинет</a></p>
+            <p><a href="{% url 'create_request' %}">Создать новую заявку</a></p>
+        {% endif %}
+    {% else %}
+        <p><a href="{% url 'login' %}">Войдите</a>, чтобы создать заявку или посмотреть свои.</p>
+        <p><a href="{% url 'register' %}">Зарегистрируйтесь</a>, если у вас ещё нет аккаунта.</p>
+    {% endif %}
+
+{% endblock %}
