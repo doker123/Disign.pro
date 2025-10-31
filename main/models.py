@@ -15,7 +15,7 @@ def validate_image_extension_and_size(value):
     validate_file_size(value)
     valid_extensions = ['.jpg', '.jpeg', '.png', '.bmp']
     ext = os.path.splitext(value.name)[1].lower()
-    if ext in valid_extensions:
+    if ext not in valid_extensions:
         raise ValidationError(f'Недопустимый формат файла. Разрешены {", ".join(valid_extensions)}')
 
 class Category(models.Model):

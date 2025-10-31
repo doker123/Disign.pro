@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Подтверждение удаления - Design.pro{% endblock %}
+
+{% block content %}
+    <h1>Подтверждение удаления заявки</h1>
+
+    <p>Вы уверены, что хотите удалить следующую заявку?</p>
+
+    <h3>{{ request.title }}</h3>
+    <p><strong>Описание:</strong> {{ request.description|truncatechars:100 }}</p>
+    <p><strong>Категория:</strong> {{ request.category.name }}</p>
+    <p><strong>Статус:</strong> {{ request.get_status_display }}</p>
+    <p><strong>Дата создания:</strong> {{ request.created_at|date:"d.m.Y H:i" }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Да, удалить</button>
+        <a href="{% url 'user_dashboard' %}">Отмена</a>
+    </form>
+
+{% endblock %}
