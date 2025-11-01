@@ -37,7 +37,7 @@
                     <tr>
                         <td>{{ req.created_at|date:"d.m.Y H:i" }}</td>
                         <td>{{ req.title }}</td>
-                        <td>{{ req.description|truncatechars:100 }}</td> <!-- Обрезаем длинное описание -->
+                        <td>{{ req.description|truncatechars:100 }}</td>
                         <td>{{ req.category.name }}</td>
                         <td>{{ req.get_status_display }}</td>
                         <td>

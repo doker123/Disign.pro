@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'css/form_register.css' %}">
 </head>
 <body>
+<div class="form-register">
     <h2>Регистрация</h2>
     <form method="post">
         {% csrf_token %}
@@ -22,5 +23,6 @@
     {% endif %}
 
     <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+</div>
 </body>
 </html>

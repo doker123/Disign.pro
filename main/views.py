@@ -37,7 +37,7 @@ def register(request):
 
 def home(request):
 
-    completed_requests = DesignRequest.objects.filter(status='completed').order_by('-created_at')[:4]
+    completed_requests = DesignRequest.objects.filter(status='complited').order_by('-created_at')[:4]
     in_progress_count = DesignRequest.objects.filter(status='in_progress').count()
 
     return render(request, 'main_app/home.html', {

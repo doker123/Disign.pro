@@ -4,17 +4,35 @@ form > p:nth-child(3),
 form > p:nth-child(4),
 form > p:nth-child(6),
 form > p:nth-child(7),
-form > p:nth-child(8)
-{
+form > p:nth-child(8),
+button {
     display: flex;
     flex-direction: column;
-    width: 200px;
+    justify-content: center;
+    gap: 15px;
+    width: 250px;
 }
+
 form > p:last-child {
     flex-direction: row;
-    width: 200px;
+
 }
+
 span,
-ul > li{
+ul > li {
     font-size: 10pt;
+    margin-left: 20px;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.form-register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

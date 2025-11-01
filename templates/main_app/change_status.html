@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Изменить статус заявки #{{ request_obj.id }} - Design.pro{% endblock %}
+
+{% block content %}
+    <h1>Изменить статус заявки #{{ request_obj.id }}</h1>
+
+    <div class="request-preview">
+        <h3>Текущая заявка:</h3>
+        <p><strong>Заголовок:</strong> {{ request_obj.title }}</p>
+        <p><strong>Описание:</strong> {{ request_obj.description|truncatechars:100 }}</p>
+        <p><strong>Категория:</strong> {{ request_obj.category.name }}</p>
+        <p><strong>Текущий статус:</strong> {{ request_obj.get_status_display }}</p>
+        {% if request_obj.plan_image %}
+            <p><strong>План помещения:</strong> <a href="{{ request_obj.plan_image.url }}" target="_blank">Посмотреть</a></p>
+        {% endif %}
+    </div>
+
+    <h2>Форма изменения статуса</h2>
+    <p><strong>Важно:</strong> После выбора статуса "Выполнено" или "Принято в работу" необходимо заполнить соответствующие поля.</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.status.id_for_label }}">Новый статус:</label>
+            {{ form.status }}
+            {% if form.status.errors %}
+                <div class="alert alert-error">{{ form.status.errors }}</div>
+            {% endif %}
+            <small>Доступные статусы: Принято в работу, Выполнено</small>
+        </div>
+
+        <!-- Поле для изображения дизайна -->
+        <div class="form-group">
+            <label for="{{ form.design_image.id_for_label }}">Изображение дизайна (требуется для статуса "Выполнено"):</label>
+            {{ form.design_image }}
+            {% if form.design_image.errors %}
+                <div class="alert alert-error">{{ form.design_image.errors }}</div>
+            {% endif %}
+            <small>Форматы: jpg, jpeg, png, bmp. Макс. 2Мб.</small>
+            {% if request_obj.design_image %}
+                <p>Текущее изображение дизайна: <a href="{{ request_obj.design_image.url }}" target="_blank">Посмотреть</a></p>
+            {% endif %}
+        </div>
+
+        <!-- Поле для комментария -->
+        <div class="form-group">
+            <label for="{{ form.admin_comment.id_for_label }}">Комментарий (требуется для статуса "Принято в работу"):</label>
+            {{ form.admin_comment }}
+            {% if form.admin_comment.errors %}
+                <div class="alert alert-error">{{ form.admin_comment.errors }}</div>
+            {% endif %}
+            {{ form.admin_comment.help_text|default:"" }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+
+    <p><strong>Подсказка:</strong> Выбранный статус будет применён только если все обязательные поля для него заполнены правильно.</p>
+
+{% endblock %}

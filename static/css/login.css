@@ -1,0 +1,41 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.form-login {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.form-login > form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.form-login > form > p {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+.form-login > form > p > input {
+    padding: 10px 15px;
+    border-radius: 50px;
+
+}
+.form-login > form > p > input:active {
+    color: #7782ff;
+}
+
+button {
+    border-radius: 50px;
+    padding: 10px 15px;
+    background-color: white;
+}
+

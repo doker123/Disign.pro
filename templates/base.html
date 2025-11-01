@@ -49,6 +49,39 @@
     {% endblock %}
 </main>
 <footer class="wrapper">
+    <div class="footer-container">
+            <div class="footer-section">
+                <h3>Design.pro</h3>
+                <p>Создаём интерьеры мечты — с заботой о деталях и вашем комфорте.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>Email: info@designpro.example</p>
+                <p>Телефон: +7 (XXX) XXX-XX-XX</p>
+                <p>Адрес: г. Город, ул. Улица, д. 123</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Быстрые ссылки</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}">Главная</a></li>
+                    <li><a href="{% url 'user_dashboard' %}">Личный кабинет</a></li>
+                    <li><a href="{% url 'create_request' %}">Создать заявку</a></li>
+                    <li><a href="#">Портфолио</a></li>
+                    <li><a href="#">О нас</a></li> 
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Следите за нами</h4>
+                <div class="social-links">
+                    <a href="#" target="_blank">Instagram</a> |
+                    <a href="#" target="_blank">VK</a> |
+                    <a href="#" target="_blank">Pinterest</a>
+                </div>
+            </div>
+        </div>
     <p>&copy; {% now "Y" %} Design.pro. Все права защищены.</p>
 </footer>
 </body>

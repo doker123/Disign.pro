@@ -4,14 +4,13 @@
     box-sizing: border-box;
 }
 
-
-
+/*base.html*/
 .wrapper {
-    width: 95%;
+    width: 100%;
     margin: auto;
 }
 header {
-    background-color: cornflowerblue;
+    background-color: #7782ff;
 }
 header > nav {
     display: flex;
@@ -35,10 +34,6 @@ main {
     align-content: space-around;
     flex-wrap: wrap;
 }
-
-
-
-
 .logoutBase {
     background: none;
     border: none;
@@ -53,9 +48,49 @@ li {
 a,
 .logoutBase{
     text-decoration: none;
-    color: #6cd554;
+    color: #ffffff;
 }
 a:hover,
 .logoutBase:hover{
     text-decoration: underline;
+}
+/*home.html*/
+.about {
+    width: 1000px;
+}
+.service > ul {
+    display: flex;
+    gap: 20px;
+}
+
+.completed-requests {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.request-item {
+    display: flex;
+    gap: 20px;
+}
+.link {
+    display: flex;
+    gap:50px;
+}
+.request-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+footer {
+    background-color: #7782ff;
+    color: white;
+}
+.footer-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+.footer-container > div {
+    display: flex;
+    flex-direction:column;
+    gap: 10px;
 }
