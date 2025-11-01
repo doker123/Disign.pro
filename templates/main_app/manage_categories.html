@@ -1,0 +1,54 @@
+<!-- templates/main_app/manage_categories.html -->
+{% extends "base.html" %}
+
+{% block title %}Управление категориями - Design.pro{% endblock %}
+
+{% block content %}
+    <h1>Управление категориями заявок</h1>
+
+    <!-- Форма добавления новой категории -->
+    <h2>Добавить категорию</h2>
+    <form method="post" action="{% url 'manage_categories' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <label for="id_name">Название новой категории:</label>
+        <input type="text" id="id_name" name="name" required placeholder="Например: 3D-дизайн">
+        <button type="submit">Добавить</button>
+    </form>
+
+    <!-- Список существующих категорий с возможностью удаления -->
+    <h2>Существующие категории</h2>
+    {% if categories %}
+        <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <td>{{ category.id }}</td>
+                        <td>{{ category.name }}</td>
+                        <td>
+                            <!-- Форма для удаления категории -->
+                            <form method="post" action="{% url 'manage_categories' %}" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить категорию \"{{ category.name }}\"? Все заявки этой категории будут удалены!');">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="category_id" value="{{ category.id }}">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Категорий пока нет.</p>
+    {% endif %}
+
+    <p><a href="{% url 'admin_dashboard' %}">Вернуться в админ-панель</a></p>
+
+{% endblock %}

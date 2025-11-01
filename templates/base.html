@@ -15,8 +15,8 @@
             <li><a href="{% url 'home' %}">Главная</a></li>
             {% if user.is_authenticated %}
                 {% if user.is_staff %}
-                    <li><a href="{% url 'home' %}">Админ-панель</a></li>
-                    <li><a href="{% url 'home' %}">Управление категориями</a></li>
+                    <li><a href="{% url 'admin_dashboard' %}">Админ-панель</a></li>
+                    <li><a href="{% url 'manage_categories' %}">Управление категориями</a></li>
                 {% else %}
                     <li><a href="{% url 'user_dashboard' %}">Личный кабинет</a></li>
                     <li><a href="{% url 'create_request' %}">Создать заявку</a></li>

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Админ-панель - Design.pro{% endblock %}
+
+{% block content %}
+    <h1>Панель управления администратора</h1>
+
+    <h2>Все заявки</h2>
+
+    {% if requests %}
+        <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Пользователь</th>
+                    <th>Дата</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Категория</th>
+                    <th>Статус</th>
+                    <th>План помещения</th>
+                    <th>Дизайн (если есть)</th>
+                    <th>Комментарий администратора</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                    <tr>
+                        <td>{{ req.id }}</td>
+                        <td>{{ req.user.username }}</td>
+                        <td>{{ req.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>{{ req.title }}</td>
+                        <td>{{ req.description|truncatechars:100 }}</td>
+                        <td>{{ req.category.name }}</td>
+                        <td>{{ req.get_status_display }}</td>
+                        <td>
+                            {% if req.plan_image %}
+                                <a href="{{ req.plan_image.url }}" target="_blank">Посмотреть</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if req.design_image %}
+                                <a href="{{ req.design_image.url }}" target="_blank">Посмотреть</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>{{ req.admin_comment|default:"-" }}</td>
+                        <td>
+                            {% if req.status == 'new' %}
+                                <a href="{% url 'change_status' request_id=req.id %}">Изменить статус</a>
+                            {% else %}
+                                <!-- Статус можно изменить только у "новых" заявок -->
+                                <span style="color: grey;">Изменить статус (недоступно)</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Заявок пока нет.</p>
+    {% endif %}
+
+    <p><a href="{% url 'manage_categories' %}">Управление категориями</a></p>
+
+{% endblock %}

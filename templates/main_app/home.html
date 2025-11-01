@@ -30,8 +30,8 @@
 
     {% if user.is_authenticated %}
         {% if user.is_staff %}
-            <p><a href="{% url 'home' %}">Перейти в админ-панель</a></p>
-            <p><a href="{% url 'home' %}">Управление категориями</a></p>
+            <p><a href="{% url 'admin_dashboard' %}">Перейти в админ-панель</a></p>
+            <p><a href="{% url 'manage_categories' %}">Управление категориями</a></p>
         {% else %}
             <p><a href="{% url 'user_dashboard' %}">Перейти в ваш личный кабинет</a></p>
             <p><a href="{% url 'create_request' %}">Создать новую заявку</a></p>

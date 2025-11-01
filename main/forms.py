@@ -35,6 +35,17 @@ class CustomUserCreationForm(UserCreationForm):
             'email': "Введите действительный адрес электронной почты.",
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+        self.fields['username'].widget.attrs.update({'placeholder': 'Введите логин'})
+        self.fields['email'].widget.attrs.update({'placeholder': 'Введите email'})
+        self.fields['password1'].widget.attrs.update({'placeholder': 'Введите пароль'})
+        self.fields['password2'].widget.attrs.update({'placeholder': 'Повторите пароль'})
+
+        self.fields['full_name'].widget.attrs.update({'placeholder': 'Введите Фамилию Имя Отчество'})
+
     def clean_username(self):
         """
         Проверяет уникальность логина.
@@ -87,8 +98,8 @@ class CustomUserCreationForm(UserCreationForm):
 
 
         if len(name_parts) >= 2:
-            user.first_name = name_parts[1] # Имя
-            user.last_name = name_parts[0]  # Фамилия
+            user.first_name = name_parts[1]
+            user.last_name = name_parts[0]
             # Если есть отчество (и его нужно сохранить, например, вместе с фамилией)
             if len(name_parts) > 2:
                 user.last_name = f"{name_parts[0]} {name_parts[2]}"
