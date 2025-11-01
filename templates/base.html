@@ -6,37 +6,35 @@
     <title>{% block title %}Design.pro Portal{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    
+
 </head>
 <body>
-<header>
+<header class='wrapper'>
     <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Главная</a></li>
-            {% if user.is_authenticated %}
-                {% if user.is_staff %}
-                    <li><a href="{% url 'admin_dashboard' %}">Админ-панель</a></li>
-                    <li><a href="{% url 'manage_categories' %}">Управление категориями</a></li>
-                {% else %}
-                    <li><a href="{% url 'user_dashboard' %}">Личный кабинет</a></li>
-                    <li><a href="{% url 'create_request' %}">Создать заявку</a></li>
-                {% endif %}
-                <li>
-                    <form method="post" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="logoutBase">
-                            Выход ({{ user.username }})
-                        </button>
-                    </form>
-                </li>
+        <a href="{% url 'home' %}">Главная</a>
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}">Админ-панель</a>
+                <a href="{% url 'manage_categories' %}">Управление категориями</a>
             {% else %}
-                <li><a href="{% url 'login' %}">Вход</a></li>
-                <li><a href="{% url 'register' %}">Регистрация</a></li>
+                <a href="{% url 'user_dashboard' %}">Личный кабинет</a>
+                <a href="{% url 'create_request' %}">Создать заявку</a>
             {% endif %}
-        </ul>
+            <li>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="logoutBase">
+                        Выход ({{ user.username }})
+                    </button>
+                </form>
+            </li>
+        {% else %}
+            <a href="{% url 'login' %}">Вход</a>
+            <a href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
     </nav>
 </header>
-<main>
+<main class='wrapper'>
     <!-- Отображение сообщений Django -->
     {% if messages %}
         <div class="messages">
@@ -50,7 +48,7 @@
     {% block content %}
     {% endblock %}
 </main>
-<footer>
+<footer class="wrapper">
     <p>&copy; {% now "Y" %} Design.pro. Все права защищены.</p>
 </footer>
 </body>
