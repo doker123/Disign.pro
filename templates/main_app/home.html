@@ -39,6 +39,7 @@
     {% if completed_requests %}
         <div class="completed-requests">
             {% for req in completed_requests %}
+                <div>
                 <div class="request-item-image">
                     {% if req.design_image %}
                         <img src="{{ req.design_image.url }}" alt="Дизайн {{ req.title }}"
@@ -52,7 +53,9 @@
                         <h3>{{ req.title }}</h3>
                         <p>Категория: {{ req.category.name }}</p>
                         <p>Дата: {{ req.created_at|date:"d.m.Y H:i" }}</p>
+                        <p>Описание: {{ req.description }}</p>
                     </div>
+                </div>
                 </div>
             {% endfor %}
         </div>
@@ -68,20 +71,16 @@
                 <p><a href="{% url 'admin_dashboard' %}">Перейти в админ-панель</a></p>
                 <p><a href="{% url 'manage_categories' %}">Управление категориями</a></p>
             </div>
-
         {% else %}
             <div class="link">
                 <p><a href="{% url 'user_dashboard' %}">Перейти в ваш личный кабинет</a></p>
                 <p><a href="{% url 'create_request' %}">Создать новую заявку</a></p>
             </div>
-
         {% endif %}
     {% else %}
         <div class="link">
             <p><a href="{% url 'login' %}">Войдите</a>, чтобы создать заявку или посмотреть свои.</p>
             <p><a href="{% url 'register' %}">Зарегистрируйтесь</a>, если у вас ещё нет аккаунта.</p>
         </div>
-
     {% endif %}
-
 {% endblock %}

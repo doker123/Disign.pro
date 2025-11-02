@@ -1,21 +1,13 @@
-form > p:nth-child(1),
-form > p:nth-child(2),
-form > p:nth-child(3),
-form > p:nth-child(4),
-form > p:nth-child(6),
-form > p:nth-child(7),
-form > p:nth-child(8),
-button {
+#id_username,
+#id_email,
+#id_password1,
+#id_password2,
+#id_full_name{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     width: 250px;
-}
-
-form > p:last-child {
-    flex-direction: row;
-
 }
 
 span,
@@ -29,10 +21,40 @@ ul > li {
     margin: 0;
     box-sizing: border-box;
 }
-
+.errorlist {
+    color: red;
+    background-color: rgba(255, 0, 0, 0.2);
+}
+ul {
+    list-style: none;
+}
 .form-register {
     display: flex;
     flex-direction: column;
+    gap: 25px;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    height: 100vh;
+}
+#id_username,
+#id_email,
+#id_password1,
+#id_password2,
+#id_full_name{
+    padding: 5px 10px;
+    border-radius: 50px;
+    background-color: rgba(119, 130, 255, 0.3);
+}
+button {
+    padding: 5px 10px;
+    border-radius: 50px;
+    background-color: rgb(255, 255, 255);
+}
+#id_username:valid,
+#id_email:valid,
+#id_password1:valid,
+#id_password2:valid,
+#id_full_name:valid {
+    background-color: rgba(127, 255, 0, 0.3);
 }

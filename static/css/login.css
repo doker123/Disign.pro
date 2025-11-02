@@ -12,11 +12,13 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    height: 100vh;
 }
 .form-login > form {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    align-items: center;
 }
 .form-login > form > p {
     display: flex;
@@ -27,15 +29,21 @@
 .form-login > form > p > input {
     padding: 10px 15px;
     border-radius: 50px;
+    background-color: rgba(119, 130, 255, 0.3);
 
 }
-.form-login > form > p > input:active {
-    color: #7782ff;
+.form-login > form > p > input:valid {
+    background-color: rgba(127, 255, 0, 0.3);
+}
+
+.form-login > form > p > input:focus {
+    border: green 1px;
 }
 
 button {
     border-radius: 50px;
     padding: 10px 15px;
     background-color: white;
+    width: 150px;
 }
 
