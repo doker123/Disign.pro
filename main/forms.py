@@ -28,7 +28,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        # Указываем ТОЛЬКО те поля, которые существуют в модели User и должны быть включены в форму
+
         fields = ("username", "email", "password1", "password2")
         help_texts = {
             'username': "Только латинские буквы и дефисы.",
