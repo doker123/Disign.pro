@@ -182,7 +182,7 @@ class ChangeStatusForm(forms.ModelForm):
         design_image = cleaned_data.get('design_image')
         admin_comment = cleaned_data.get('admin_comment')
 
-        if status == 'completed' and not design_image:
+        if status == 'complited' and not design_image:
             self.add_error('design_image', 'Для статуса "Выполнено" необходимо прикрепить изображение дизайна.')
         if status == 'in_progress' and not admin_comment:
             self.add_error('admin_comment', 'Для статуса "Принято в работу" необходимо указать комментарий.')
