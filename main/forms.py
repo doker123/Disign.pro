@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
+import re
 from .models import DesignRequest, Category
 
 class CustomUserCreationForm(UserCreationForm):
@@ -12,10 +12,6 @@ class CustomUserCreationForm(UserCreationForm):
     # Поле для ввода ФИО, не связанное с моделью User
     full_name = forms.CharField(
         max_length=254,
-        validators=[RegexValidator(
-            regex=r'^[а-яёА-ЯЁ\s\-]+$',
-            message="ФИО должно содержать только кириллические буквы, пробелы и дефисы."
-        )],
         label="ФИО",
         help_text="Введите ваше полное имя на кириллице (Фамилия Имя Отчество)."
     )
@@ -48,11 +44,18 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_username(self):
         """
-        Проверяет уникальность логина.
+        Проверяет уникальность логина и формат (только латиница, цифры, подчёркивание, дефис).
         """
         username = self.cleaned_data.get('username')
+
         if User.objects.filter(username=username).exists():
             raise ValidationError("Пользователь с таким логином уже существует.")
+
+        pattern = r'^[a-zA-Z0-9_-]+$'
+        if not re.fullmatch(pattern, username):
+            raise ValidationError(
+                "Логин должен содержать только латинские буквы, цифры, подчёркивание (_) или дефис (-).")
+
         return username
 
     def clean_email(self):
